@@ -1,0 +1,93 @@
+{
+  "name": "CommitteeMember",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Full Name"
+    },
+    "designation": {
+      "type": "string",
+      "title": "Official Designation"
+    },
+    "category": {
+      "type": "string",
+      "title": "Committee Category",
+      "enum": [
+        "Executive Committee",
+        "Core Committee",
+        "Department Heads",
+        "Committee Member"
+      ],
+      "default": "Committee Member"
+    },
+    "bio": {
+      "type": "string",
+      "title": "Short Biography",
+      "format": "textarea"
+    },
+    "responsibilities": {
+      "type": "string",
+      "title": "Responsibilities & Contributions",
+      "format": "textarea"
+    },
+    "background": {
+      "type": "string",
+      "title": "Professional Background",
+      "format": "textarea"
+    },
+    "linkedin_url": {
+      "type": "string",
+      "title": "LinkedIn Profile URL"
+    },
+    "facebook_url": {
+      "type": "string",
+      "title": "Facebook Profile URL"
+    },
+    "github_url": {
+      "type": "string",
+      "title": "GitHub Profile URL"
+    },
+    "website_url": {
+      "type": "string",
+      "title": "Personal Website URL"
+    },
+    "other_socials": {
+      "type": "string",
+      "title": "Other Social Links",
+      "format": "textarea"
+    },
+    "display_order": {
+      "type": "number",
+      "title": "Display Order",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "title": "Committee Status",
+      "enum": [
+        "current",
+        "former"
+      ],
+      "default": "current"
+    },
+    "tenure": {
+      "type": "string",
+      "title": "Committee Term / Tenure"
+    },
+    "featured": {
+      "type": "boolean",
+      "title": "Featured Member",
+      "default": false
+    },
+    "published": {
+      "type": "boolean",
+      "title": "Published",
+      "default": true
+    }
+  },
+  "required": [
+    "name",
+    "designation"
+  ]
+}

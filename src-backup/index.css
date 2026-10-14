@@ -1,0 +1,180 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Mode — Porcelain & Cobalt */
+    --background: 220 33% 97.6%;
+    --foreground: 217 33% 14.5%;
+    --card: 0 0% 100%;
+    --card-foreground: 217 33% 14.5%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 217 33% 14.5%;
+    --primary: 221 89% 62%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 225 100% 96%;
+    --secondary-foreground: 221 89% 40%;
+    --muted: 220 26% 93%;
+    --muted-foreground: 220 12% 53%;
+    --accent: 186 62% 52%;
+    --accent-foreground: 217 47% 12%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 26% 89.6%;
+    --input: 220 26% 89.6%;
+    --ring: 221 89% 62%;
+    --surface: 0 0% 100%;
+    --surface-elevated: 225 100% 96%;
+    --nav-bg: 0 0% 100%;
+    --grid-line: 217 33% 14.5%;
+    --radius: 1rem;
+    --font-heading: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-body: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-display: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    --chart-1: 221 89% 62%;
+    --chart-2: 186 62% 52%;
+    --chart-3: 265 84% 60%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+  }
+
+  .dark {
+    /* Dark Mode — Slate & Sapphire */
+    --background: 228 47% 8.6%;
+    --foreground: 0 0% 100%;
+    --card: 220 39% 12.5%;
+    --card-foreground: 0 0% 100%;
+    --popover: 220 39% 12.5%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 186 62% 52%;
+    --primary-foreground: 228 47% 8.6%;
+    --secondary: 217 33% 16.7%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 217 33% 16.7%;
+    --muted-foreground: 213 20% 72%;
+    --accent: 221 89% 62%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 220 20% 22%;
+    --input: 220 20% 22%;
+    --ring: 186 62% 52%;
+    --surface: 220 39% 12.5%;
+    --surface-elevated: 217 33% 16.7%;
+    --nav-bg: 228 47% 8.6%;
+    --grid-line: 0 0% 100%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  ::selection {
+    @apply bg-primary/20;
+  }
+}
+
+@layer components {
+  .input-base {
+    @apply w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-colors;
+  }
+}
+
+@layer utilities {
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
+  /* Subtle dot-grid background */
+  .bg-dot-grid {
+    background-image: radial-gradient(circle, hsl(var(--grid-line) / 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Fine line grid */
+  .bg-line-grid {
+    background-image:
+      linear-gradient(to right, hsl(var(--grid-line) / 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--grid-line) / 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* Brand gradient text */
+  .text-gradient-brand {
+    background: linear-gradient(135deg, hsl(186 62% 52%), hsl(221 89% 62%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Glow effect */
+  .glow-primary {
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.15);
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 40px hsl(var(--accent) / 0.15);
+  }
+
+  /* Smooth scrollbar */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-muted-foreground/30;
+    border-radius: 9999px;
+  }
+
+  /* Animated entrance */
+  .animate-fade-up {
+    animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease both;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  /* Pulse for network nodes */
+  @keyframes nodePulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.3); }
+  }
+  .animate-node-pulse {
+    animation: nodePulse 3s ease-in-out infinite;
+  }
+
+  /* Float */
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  .animate-float {
+    animation: floatY 6s ease-in-out infinite;
+  }
+}

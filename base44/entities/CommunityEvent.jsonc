@@ -1,0 +1,64 @@
+{
+  "name": "CommunityEvent",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Event Title"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "title": "Event Date"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description",
+      "format": "textarea"
+    },
+    "location": {
+      "type": "string",
+      "title": "Location"
+    },
+    "format": {
+      "type": "string",
+      "title": "Format",
+      "enum": [
+        "In-person",
+        "Online",
+        "Hybrid"
+      ],
+      "default": "In-person"
+    },
+    "registration_info": {
+      "type": "string",
+      "title": "Registration Information",
+      "format": "textarea"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "upcoming",
+        "past"
+      ],
+      "default": "upcoming"
+    },
+    "category": {
+      "type": "string",
+      "title": "Category",
+      "enum": [
+        "Networking Meetup",
+        "Knowledge Sharing",
+        "Career Development",
+        "Technical Workshop",
+        "Community Announcement"
+      ],
+      "default": "Networking Meetup"
+    }
+  },
+  "required": [
+    "title",
+    "date"
+  ]
+}

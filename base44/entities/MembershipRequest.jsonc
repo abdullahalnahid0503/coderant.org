@@ -1,0 +1,71 @@
+{
+  "name": "MembershipRequest",
+  "type": "object",
+  "properties": {
+    "full_name": {
+      "type": "string",
+      "title": "Full Name"
+    },
+    "email": {
+      "type": "string",
+      "title": "Email Address"
+    },
+    "location": {
+      "type": "string",
+      "title": "Current Malaysian Location"
+    },
+    "professional_status": {
+      "type": "string",
+      "title": "Professional or Student Status",
+      "enum": [
+        "IT Professional",
+        "Technology Entrepreneur",
+        "Student (4th year+ Bachelors)",
+        "Student (Postgraduate)"
+      ],
+      "default": "IT Professional"
+    },
+    "company_or_university": {
+      "type": "string",
+      "title": "Company or University"
+    },
+    "role_or_year": {
+      "type": "string",
+      "title": "Current Role or Year of Study"
+    },
+    "specialization": {
+      "type": "string",
+      "title": "Technology Specialization"
+    },
+    "linkedin_url": {
+      "type": "string",
+      "title": "LinkedIn URL (optional)"
+    },
+    "reason": {
+      "type": "string",
+      "title": "Reason for Wanting to Join",
+      "format": "textarea"
+    },
+    "privacy_consent": {
+      "type": "boolean",
+      "title": "Privacy Consent",
+      "default": false
+    },
+    "review_status": {
+      "type": "string",
+      "title": "Review Status",
+      "enum": [
+        "pending",
+        "approved",
+        "rejected"
+      ],
+      "default": "pending"
+    }
+  },
+  "required": [
+    "full_name",
+    "email",
+    "location",
+    "privacy_consent"
+  ]
+}

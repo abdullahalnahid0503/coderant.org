@@ -1,0 +1,60 @@
+{
+  "name": "Article",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Title",
+    },
+    "excerpt": {
+      "type": "string",
+      "title": "Excerpt",
+      "format": "textarea",
+    },
+    "content": {
+      "type": "string",
+      "title": "Content",
+      "format": "textarea",
+    },
+    "category": {
+      "type": "string",
+      "title": "Category",
+      "enum": [
+        "Technology",
+        "Career Development",
+        "Industry RantGPT",
+        "Tutorials",
+        "Community News",
+      ],
+      "default": "Technology",
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+      },
+      "title": "Tags",
+    },
+    "author": {
+      "type": "string",
+      "title": "Author",
+    },
+    "published_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Publication Date",
+    },
+    "featured": {
+      "type": "boolean",
+      "title": "Featured Article",
+      "default": false,
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": ["published", "draft"],
+      "default": "published",
+    },
+  },
+  "required": ["title", "content"],
+}

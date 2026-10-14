@@ -1,0 +1,126 @@
+{
+  "name": "Job",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "title": "Job Title"
+    },
+    "company": {
+      "type": "string",
+      "title": "Company Name"
+    },
+    "company_logo": {
+      "type": "string",
+      "title": "Company Logo URL"
+    },
+    "location": {
+      "type": "string",
+      "title": "Location"
+    },
+    "employment_type": {
+      "type": "string",
+      "title": "Employment Type",
+      "enum": [
+        "Full-time",
+        "Part-time",
+        "Contract",
+        "Internship"
+      ],
+      "default": "Full-time"
+    },
+    "work_arrangement": {
+      "type": "string",
+      "title": "Work Arrangement",
+      "enum": [
+        "On-site",
+        "Hybrid",
+        "Remote"
+      ],
+      "default": "On-site"
+    },
+    "experience_level": {
+      "type": "string",
+      "title": "Experience Level",
+      "enum": [
+        "Entry",
+        "Junior",
+        "Mid",
+        "Senior",
+        "Lead",
+        "Manager"
+      ],
+      "default": "Mid"
+    },
+    "salary": {
+      "type": "string",
+      "title": "Salary (if disclosed)"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "title": "Relevant Skills"
+    },
+    "description": {
+      "type": "string",
+      "title": "Full Description",
+      "format": "textarea"
+    },
+    "responsibilities": {
+      "type": "string",
+      "title": "Responsibilities",
+      "format": "textarea"
+    },
+    "requirements": {
+      "type": "string",
+      "title": "Requirements",
+      "format": "textarea"
+    },
+    "application_url": {
+      "type": "string",
+      "title": "Application URL"
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date",
+      "title": "Application Deadline"
+    },
+    "category": {
+      "type": "string",
+      "title": "Job Category",
+      "enum": [
+        "Software Engineering",
+        "AI and Data",
+        "Cybersecurity",
+        "Cloud and DevOps",
+        "IT Support",
+        "Product",
+        "QA",
+        "Design",
+        "Technology Consulting"
+      ],
+      "default": "Software Engineering"
+    },
+    "posted_date": {
+      "type": "string",
+      "format": "date",
+      "title": "Date Posted"
+    },
+    "status": {
+      "type": "string",
+      "title": "Status",
+      "enum": [
+        "active",
+        "archived",
+        "expired"
+      ],
+      "default": "active"
+    }
+  },
+  "required": [
+    "title",
+    "company"
+  ]
+}
