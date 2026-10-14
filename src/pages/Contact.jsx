@@ -1,190 +1,394 @@
-const db = globalThis.__B44_DB__ || { auth:{ isAuthenticated: async()=>false, me: async()=>null }, entities:new Proxy({}, { get:()=>({ filter:async()=>[], get:async()=>null, create:async()=>({}), update:async()=>({}), delete:async()=>({}) }) }), integrations:{ Core:{ UploadFile:async()=>({ file_url:'' }) } } };
+import React, { useState } from "react";
+import {
+  Mail,
+  Send,
+  CheckCircle2,
+  Facebook,
+  Instagram,
+  Linkedin,
+  MessageSquare,
+} from "lucide-react";
 
-import React, { useState } from 'react';
-import { Mail, Send, CheckCircle2, Linkedin, Github, MessageSquare } from 'lucide-react';
+const SOCIAL_LINKS = [
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/CodeRantMY",
+    icon: Facebook,
+    description: "Follow us on Facebook",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/",
+    icon: Instagram,
+    description: "Follow us on Instagram",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/code-rant/posts/?feedView=all",
+    icon: Linkedin,
+    description: "Connect with us professionally",
+  },
+];
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState('idle'); // idle | submitting | success | error
+  const [status, setStatus] = useState("idle");
 
   const validate = () => {
     const e = {};
-    if (!form.name.trim()) e.name = 'Name is required';
-    if (!form.email.trim()) e.email = 'Email is required';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Enter a valid email';
-    if (!form.subject.trim()) e.subject = 'Subject is required';
-    if (!form.message.trim()) e.message = 'Message is required';
+
+    if (!form.name.trim()) {
+      e.name = "Name is required";
+    }
+
+    if (!form.email.trim()) {
+      e.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      e.email = "Enter a valid email";
+    }
+
+    if (!form.subject.trim()) {
+      e.subject = "Subject is required";
+    }
+
+    if (!form.message.trim()) {
+      e.message = "Message is required";
+    }
+
     setErrors(e);
     return Object.keys(e).length === 0;
   };
 
   const handleSubmit = async (ev) => {
     ev.preventDefault();
+
     if (!validate()) return;
-    setStatus('submitting');
+
+    setStatus("submitting");
+
     try {
+      // Uses the existing Base44 database integration.
+      const db = globalThis.__B44_DB__ || {
+        entities: new Proxy(
+          {},
+          {
+            get: () => ({
+              create: async () => {
+                throw new Error("Contact message service is not configured.");
+              },
+            }),
+          },
+        ),
+      };
+
       await db.entities.ContactMessage.create(form);
-      setStatus('success');
-      setForm({ name: '', email: '', subject: '', message: '' });
-    } catch {
-      setStatus('error');
+
+      setStatus("success");
+      setForm({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+      });
+      setErrors({});
+    } catch (error) {
+      console.error("Contact form submission failed:", error);
+      setStatus("error");
     }
   };
 
-  const update = (field) => (e) => setForm({ ...form, [field]: e.target.value });
+  const update = (field) => (e) => {
+    setForm((prev) => ({
+      ...prev,
+      [field]: e.target.value,
+    }));
+
+    if (errors[field]) {
+      setErrors((prev) => ({
+        ...prev,
+        [field]: "",
+      }));
+    }
+  };
 
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="relative bg-background overflow-hidden">
+      <section className="relative overflow-hidden bg-background">
         <div className="absolute inset-0 bg-dot-grid opacity-40" />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 pt-12 pb-12 text-center">
+
+        <div className="relative mx-auto max-w-4xl px-4 pb-12 pt-12 text-center sm:px-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5">
-            <span className="text-xs font-mono text-muted-foreground">Contact</span>
+            <Mail className="h-3.5 w-3.5 text-primary" />
+
+            <span className="font-mono text-xs text-muted-foreground">
+              Contact
+            </span>
           </div>
-          <h1 className="mt-6 font-heading text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground">
-            Get in{' '}
-            <span className="text-gradient-brand">Touch</span>
+
+          <h1 className="mt-6 font-heading text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
+            Get in <span className="text-gradient-brand">Touch</span>
           </h1>
-          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-            Have a question or want to learn more about CodeRant? We'd love to hear from you.
+
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+            Have a question or want to learn more about CodeRant? We'd love to
+            hear from you.
           </p>
         </div>
       </section>
 
-      {/* Content */}
-      <section className="bg-card/30 border-y border-border">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-16">
-          <div className="grid lg:grid-cols-5 gap-10">
-            {/* Info */}
+      {/* Contact Content */}
+      <section className="border-y border-border bg-card/30">
+        <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
+          <div className="grid gap-10 lg:grid-cols-5">
+            {/* Social Links and Invitation Box */}
             <div className="lg:col-span-2">
-              <h2 className="font-heading text-xl font-bold text-foreground">Connect with us</h2>
+              <h2 className="font-heading text-xl font-bold text-foreground">
+                Connect with us
+              </h2>
+
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Whether you're interested in joining the community, posting a job opportunity, or collaborating on an initiative, reach out and we'll get back to you.
+                Whether you're interested in joining the community, posting a
+                job opportunity, or collaborating on an initiative, reach out
+                and we'll get back to you.
               </p>
 
               <div className="mt-8 space-y-3">
-                <a
-                  href="https://www.linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 rounded-2xl border border-border bg-background p-4 hover:border-primary/40 transition-colors"
-                >
-                  <div className="h-10 w-10 grid place-items-center rounded-xl bg-primary/10 text-primary">
-                    <Linkedin className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">LinkedIn</p>
-                    <p className="text-xs text-muted-foreground">Connect with our community</p>
-                  </div>
-                </a>
-                <a
-                  href="https://github.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 rounded-2xl border border-border bg-background p-4 hover:border-primary/40 transition-colors"
-                >
-                  <div className="h-10 w-10 grid place-items-center rounded-xl bg-primary/10 text-primary">
-                    <Github className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">GitHub</p>
-                    <p className="text-xs text-muted-foreground">Explore our projects</p>
-                  </div>
-                </a>
+                {/* Social Media Links */}
+                {SOCIAL_LINKS.map(
+                  ({ label, href, icon: Icon, description }) => (
+                    <a
+                      key={label}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`${label} - opens in a new tab`}
+                      className="group flex items-center gap-3 rounded-2xl border border-border bg-background p-4 transition-all duration-200 hover:border-primary/40 hover:bg-card"
+                    >
+                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                        <Icon className="h-5 w-5" />
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium text-foreground">
+                          {label}
+                        </p>
+
+                        <p className="mt-0.5 text-xs text-muted-foreground">
+                          {description}
+                        </p>
+                      </div>
+                    </a>
+                  ),
+                )}
+
+                {/* Existing Community Invitation Box */}
                 <div className="flex items-center gap-3 rounded-2xl border border-border bg-background p-4">
-                  <div className="h-10 w-10 grid place-items-center rounded-xl bg-primary/10 text-primary">
+                  <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
                     <MessageSquare className="h-5 w-5" />
                   </div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">Community</p>
-                    <p className="text-xs text-muted-foreground">Invite-only - apply via the Join page</p>
+
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-foreground">
+                      Community
+                    </p>
+
+                    <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                      Invite-only - apply via the Join page
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Form */}
+            {/* Contact Form */}
             <div className="lg:col-span-3">
               <div className="rounded-3xl border border-border bg-background p-6 sm:p-8">
-                {status === 'success' ? (
-                  <div className="flex flex-col items-center justify-center text-center py-12">
-                    <div className="h-14 w-14 grid place-items-center rounded-2xl bg-accent/10 text-accent">
+                {status === "success" ? (
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <div className="grid h-14 w-14 place-items-center rounded-2xl bg-accent/10 text-accent">
                       <CheckCircle2 className="h-7 w-7" />
                     </div>
-                    <h3 className="mt-5 font-heading text-xl font-bold text-foreground">Message sent!</h3>
-                    <p className="mt-2 text-sm text-muted-foreground max-w-sm">
-                      Thank you for reaching out. We'll get back to you as soon as possible.
+
+                    <h3 className="mt-5 font-heading text-xl font-bold text-foreground">
+                      Message sent!
+                    </h3>
+
+                    <p className="mt-2 max-w-sm text-sm text-muted-foreground">
+                      Thank you for reaching out. We'll get back to you as soon
+                      as possible.
                     </p>
+
                     <button
-                      onClick={() => setStatus('idle')}
-                      className="mt-6 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-foreground hover:bg-muted/50 transition-colors"
+                      type="button"
+                      onClick={() => setStatus("idle")}
+                      className="mt-6 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/50"
                     >
                       Send another message
                     </button>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="grid sm:grid-cols-2 gap-4">
+                  <form
+                    onSubmit={handleSubmit}
+                    noValidate
+                    className="space-y-5"
+                  >
+                    {/* Name and Email */}
+                    <div className="grid gap-4 sm:grid-cols-2">
                       <div>
-                        <label className="block text-sm font-medium text-foreground mb-1.5">Name</label>
+                        <label
+                          htmlFor="contact-name"
+                          className="mb-1.5 block text-sm font-medium text-foreground"
+                        >
+                          Name
+                        </label>
+
                         <input
+                          id="contact-name"
                           type="text"
+                          autoComplete="name"
                           value={form.name}
-                          onChange={update('name')}
-                          className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-colors"
+                          onChange={update("name")}
+                          aria-invalid={!!errors.name}
+                          aria-describedby={
+                            errors.name ? "contact-name-error" : undefined
+                          }
+                          className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                           placeholder="Your name"
                         />
-                        {errors.name && <p className="mt-1 text-xs text-destructive">{errors.name}</p>}
+
+                        {errors.name && (
+                          <p
+                            id="contact-name-error"
+                            className="mt-1 text-xs text-destructive"
+                          >
+                            {errors.name}
+                          </p>
+                        )}
                       </div>
+
                       <div>
-                        <label className="block text-sm font-medium text-foreground mb-1.5">Email</label>
+                        <label
+                          htmlFor="contact-email"
+                          className="mb-1.5 block text-sm font-medium text-foreground"
+                        >
+                          Email
+                        </label>
+
                         <input
+                          id="contact-email"
                           type="email"
+                          autoComplete="email"
                           value={form.email}
-                          onChange={update('email')}
-                          className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-colors"
+                          onChange={update("email")}
+                          aria-invalid={!!errors.email}
+                          aria-describedby={
+                            errors.email ? "contact-email-error" : undefined
+                          }
+                          className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                           placeholder="you@example.com"
                         />
-                        {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
+
+                        {errors.email && (
+                          <p
+                            id="contact-email-error"
+                            className="mt-1 text-xs text-destructive"
+                          >
+                            {errors.email}
+                          </p>
+                        )}
                       </div>
                     </div>
+
+                    {/* Subject */}
                     <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">Subject</label>
+                      <label
+                        htmlFor="contact-subject"
+                        className="mb-1.5 block text-sm font-medium text-foreground"
+                      >
+                        Subject
+                      </label>
+
                       <input
+                        id="contact-subject"
                         type="text"
                         value={form.subject}
-                        onChange={update('subject')}
-                        className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-colors"
+                        onChange={update("subject")}
+                        aria-invalid={!!errors.subject}
+                        aria-describedby={
+                          errors.subject ? "contact-subject-error" : undefined
+                        }
+                        className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
                         placeholder="What's this about?"
                       />
-                      {errors.subject && <p className="mt-1 text-xs text-destructive">{errors.subject}</p>}
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-foreground mb-1.5">Message</label>
-                      <textarea
-                        rows={5}
-                        value={form.message}
-                        onChange={update('message')}
-                        className="w-full rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-colors resize-none"
-                        placeholder="Your message..."
-                      />
-                      {errors.message && <p className="mt-1 text-xs text-destructive">{errors.message}</p>}
+
+                      {errors.subject && (
+                        <p
+                          id="contact-subject-error"
+                          className="mt-1 text-xs text-destructive"
+                        >
+                          {errors.subject}
+                        </p>
+                      )}
                     </div>
 
-                    {status === 'error' && (
-                      <div className="rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+                    {/* Message */}
+                    <div>
+                      <label
+                        htmlFor="contact-message"
+                        className="mb-1.5 block text-sm font-medium text-foreground"
+                      >
+                        Message
+                      </label>
+
+                      <textarea
+                        id="contact-message"
+                        rows={5}
+                        value={form.message}
+                        onChange={update("message")}
+                        aria-invalid={!!errors.message}
+                        aria-describedby={
+                          errors.message ? "contact-message-error" : undefined
+                        }
+                        className="w-full resize-none rounded-xl border border-border bg-card px-4 py-2.5 text-sm text-foreground transition-colors focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                        placeholder="Your message..."
+                      />
+
+                      {errors.message && (
+                        <p
+                          id="contact-message-error"
+                          className="mt-1 text-xs text-destructive"
+                        >
+                          {errors.message}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Error Message */}
+                    {status === "error" && (
+                      <div
+                        role="alert"
+                        className="rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive"
+                      >
                         Something went wrong. Please try again later.
                       </div>
                     )}
 
+                    {/* Submit Button */}
                     <button
                       type="submit"
-                      disabled={status === 'submitting'}
-                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-50"
+                      disabled={status === "submitting"}
+                      className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      {status === 'submitting' ? 'Sending...' : 'Send Message'}
+                      {status === "submitting" ? "Sending..." : "Send Message"}
+
                       <Send className="h-4 w-4" />
                     </button>
                   </form>
