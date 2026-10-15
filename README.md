@@ -16,8 +16,6 @@ Live website: https://coderantorg.vercel.app/
 - Privacy policy, terms, and community guidelines
 - Responsive interface with light and dark theme support
 
-> **Implementation status:** This repository still contains Base44 compatibility code. Authentication, entity data, file uploads, and the RantGPT server action are not fully connected to an independent backend yet. Do not assume those features are production-ready until their backend integrations have been replaced and tested.
-
 ## Technology Stack
 
 - React 18
