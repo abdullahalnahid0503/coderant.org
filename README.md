@@ -122,19 +122,6 @@ The production frontend output is written to `dist/`.
 
 If deploying to Vercel, configure the required environment variables in the Vercel project settings. Confirm that `/api/jobs` is available in the deployed environment and test it after deployment.
 
-## Base44 Migration Notes
-
-The project is **not yet fully independent of Base44**. Before removing Base44 completely, replace and test all remaining integrations, including:
-
-- `src/api/base44Client.js`
-- `src/lib/AuthContext.jsx`
-- Any page or component that calls `base44.entities`, `base44.functions`, `base44.auth`, or Base44 upload integrations
-- Base44-related dependencies and Vite configuration, if present
-- Admin, login, registration, password reset, membership, article, and FAQ data flows
-
-The current `base44Client.js` and authentication context contain placeholder behavior. For example, the adapter returns empty entity results and unauthenticated status; it is not a real database or authentication service. The RantGPT page calls a Base44 function named `rantgptChat`, so its chat request needs a replacement API endpoint before it can work independently.
-
-Do not simply delete the adapter or uninstall its packages first. Migrate each feature to a real backend/API, update the related frontend calls, then run and test the affected flows.
 
 ## Security
 
