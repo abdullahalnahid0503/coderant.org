@@ -1,186 +1,151 @@
-# Project Documentation
+# CodeRant
 
-A modern web application built with React and Vite, designed for a clean development workflow, maintainable code, and future scalability.
+CodeRant is a community website for Bangladeshi IT professionals and eligible senior IT students living in Malaysia. The project brings community information, committee details, job listings, articles, and the RantGPT assistant into one web experience.
 
-## Overview
+Live website: https://coderantorg.vercel.app/
 
-This project is developed with a focus on usability, performance, and maintainability. The codebase is organized to support continuous development, feature improvements, and future integration with independent backend services.
+## Features
 
-## Tech Stack
+- Home and community information pages
+- About and committee pages, including committee member profiles
+- Job search and job detail pages
+- RantGPT chat interface
+- Community and article pages
+- Contact and membership application pages
+- Admin interface
+- Privacy policy, terms, and community guidelines
+- Responsive interface with light and dark theme support
 
-- **Frontend:** React
-- **Build Tool:** Vite
-- **Language:** JavaScript
-- **Styling:** Tailwind CSS
-- **Package Manager:** npm
-- **Version Control:** Git
+> **Implementation status:** This repository still contains Base44 compatibility code. Authentication, entity data, file uploads, and the RantGPT server action are not fully connected to an independent backend yet. Do not assume those features are production-ready until their backend integrations have been replaced and tested.
 
-*The technologies listed above should reflect the dependencies actually used in the project.*
+## Technology Stack
+
+- React 18
+- Vite
+- React Router
+- Tailwind CSS
+- Radix UI components
+- TanStack Query
+- Lucide React
+- Express for the local jobs API
+- RapidAPI JSearch for job listings
+
+## Requirements
+
+- Node.js (use a current LTS release)
+- npm
+- Access to the JSearch service if you want to test job search locally
 
 ## Getting Started
 
-### Prerequisites
-
-Before getting started, ensure that you have installed:
-
-- [Node.js](https://nodejs.org/)
-- npm, included with Node.js
-- [Git](https://git-scm.com/)
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone <YOUR_REPOSITORY_URL>
-   ```
-
-2. Navigate to the project directory:
-
-   ```bash
-   cd <YOUR_PROJECT_DIRECTORY>
-   ```
-
-3. Install the dependencies:
+1. Clone or download this repository.
+2. Open a terminal in the project directory.
+3. Install dependencies:
 
    ```bash
    npm install
    ```
 
-4. Start the development server:
+4. If you want to run the jobs API locally, configure the JSearch service settings in your local environment according to the provider's setup instructions. Keep local configuration files out of version control.
+
+5. Start the frontend development server:
 
    ```bash
    npm run dev
    ```
 
-5. Open the local URL displayed in your terminal.
+   Vite normally serves the frontend at `http://localhost:5173`.
 
-## Development
+6. To enable the local jobs API, open a second terminal and run:
 
-### Running Locally
+   ```bash
+   node server/index.js
+   ```
 
-Start the Vite development server with:
+   The local API listens on `http://localhost:3001`. The Vite development server proxies `/api` requests to this service.
 
-```bash
-npm run dev
-```
+## Available Scripts
 
-### Production Build
-
-Generate an optimized production build:
-
-```bash
-npm run build
-```
-
-### Previewing the Production Build
-
-Preview the generated build locally:
-
-```bash
-npm run preview
-```
-
-### Code Quality
-
-If linting is configured in the project, run:
-
-```bash
-npm run lint
-```
-
-Check `package.json` for the scripts available in your current setup.
-
-## Project Structure
-
-The project follows a modular structure to keep components, pages, styles, and supporting utilities organized.
-
-```text
-project/
-├── public/          # Static assets
-├── src/
-│   ├── components/  # Reusable UI components
-│   ├── pages/       # Application pages
-│   ├── lib/         # Shared utilities
-│   ├── App.jsx      # Main application component
-│   └── main.jsx     # Application entry point
-├── index.html
-├── package.json
-├── vite.config.js
-└── README.md
-```
-
-*The structure above is illustrative. Your actual repository may use a different organization.*
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the Vite development server |
+| `npm run build` | Build the frontend for production |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run ESLint |
+| `npm run lint:fix` | Automatically fix supported ESLint issues |
+| `npm run typecheck` | Run the configured TypeScript check |
 
 ## Environment Configuration
 
-Environment variables can be used to configure application-specific settings.
+The jobs integration uses the JSearch service through RapidAPI. Configure the service settings required by the current backend implementation in your local environment or Vercel project settings. Keep environment-specific configuration out of source control, and do not expose private configuration in frontend variables such as `VITE_*`.
 
-If required, create a `.env` file in the project root and define the variables used by the application.
+## Project Structure
 
-Example:
-
-```env
-VITE_API_URL=http://localhost:3000/api
+```text
+.
+├── api/
+│   └── jobs.js             # Vercel serverless endpoint for job search
+├── public/                 # Static assets
+├── server/
+│   └── index.js            # Local Express jobs API
+├── src/
+│   ├── api/                # API client adapters
+│   ├── components/         # Shared UI and layout components
+│   ├── data/               # Local community and committee data
+│   ├── hooks/              # Reusable React hooks
+│   ├── lib/                # App utilities and context providers
+│   ├── pages/              # Website pages
+│   ├── App.jsx             # App routes and providers
+│   ├── index.css           # Global styles
+│   └── main.jsx            # Frontend entry point
+├── index.html
+├── package.json
+└── vite.config.js
 ```
 
-Only add environment variables that your application actually uses.
+## Job Search API
 
-**Security note:** Never commit passwords, private API keys, database credentials, or other sensitive information to version control. Variables prefixed with `VITE_` are exposed to client-side code and must not contain secrets.
+The repository includes two implementations of the jobs endpoint:
 
-## Backend Integration
+- `api/jobs.js` is intended for Vercel serverless deployment.
+- `server/index.js` runs a local Express API on port `3001`.
 
-The application can be connected to an independently managed backend for features such as:
-
-- User authentication and authorization
-- Database operations and data management
-- File uploads and storage
-- External API integrations
-- Application-specific business logic
-
-Backend services should be configured separately and accessed through well-defined API endpoints.
+Both use the RapidAPI JSearch service. Configure the service for the environment where you run the application before testing job search. External API availability and results depend on the provider and its usage limits.
 
 ## Deployment
 
-To prepare the application for deployment, run:
+The frontend is built with Vite and can be deployed to Vercel or another static hosting provider that supports Vite.
 
 ```bash
 npm run build
 ```
 
-The optimized production files will be generated in the `dist/` directory by default.
+The production frontend output is written to `dist/`.
 
-Deploy the generated files to a hosting provider that supports static web applications. If the application requires a backend, deploy and configure that service separately.
+If deploying to Vercel, configure the required environment variables in the Vercel project settings. Confirm that `/api/jobs` is available in the deployed environment and test it after deployment.
 
-Configure environment variables and client-side routing according to your hosting provider's requirements.
+## Base44 Migration Notes
 
-## Version Control
+The project is **not yet fully independent of Base44**. Before removing Base44 completely, replace and test all remaining integrations, including:
 
-Use Git to track changes and maintain a clear development history.
+- `src/api/base44Client.js`
+- `src/lib/AuthContext.jsx`
+- Any page or component that calls `base44.entities`, `base44.functions`, `base44.auth`, or Base44 upload integrations
+- Base44-related dependencies and Vite configuration, if present
+- Admin, login, registration, password reset, membership, article, and FAQ data flows
 
-```bash
-git add .
-git commit -m "Describe your changes"
-git push
-```
+The current `base44Client.js` and authentication context contain placeholder behavior. For example, the adapter returns empty entity results and unauthenticated status; it is not a real database or authentication service. The RantGPT page calls a Base44 function named `rantgptChat`, so its chat request needs a replacement API endpoint before it can work independently.
 
-Review your changes before committing, and avoid including generated files, local dependencies, or sensitive configuration.
+Do not simply delete the adapter or uninstall its packages first. Migrate each feature to a real backend/API, update the related frontend calls, then run and test the affected flows.
 
-## Contributing
+## Security
 
-When making changes to the project:
-
-1. Keep components modular and reusable.
-2. Follow the existing code style and naming conventions.
-3. Test affected features before committing.
-4. Update documentation when workflows or functionality change.
-5. Avoid introducing unnecessary dependencies.
+- Keep local environment configuration out of version control.
+- Validate and sanitize user input on the server.
+- Protect administrative endpoints with real server-side authorization.
+- Do not rely on frontend route guards alone to secure private data or admin actions.
+- Review environment variables and deployment settings before publishing.
 
 ## License
 
-Specify the applicable license here before distributing or publishing the project.
-
----
-
-**Maintained by the project developer.**
-
+No license has been specified in this repository. Contact the project maintainers before reusing or redistributing the code.
